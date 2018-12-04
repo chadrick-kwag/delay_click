@@ -11,6 +11,7 @@ chrome.contextMenus.onClicked.addListener(onClickHandler);
 
 
 var last_trigger_time=-1
+var global_port=null
 
 function get_delay(){
     var next_trigger_time=0;
@@ -64,16 +65,19 @@ function onClickHandler(info, tab) {
             }
             console.log("timeout done. executing function with tabid="+tabid)
             chrome.tabs.sendMessage(tabid, msg, function(data){
+                // this is the callback function.
+
                 var dcitem = fetch_dcitem(tabid, data.click_id)
+
                 if(dcitem==null){
                     console.log("cannot retrieve dcitem")
                 }
                 else{
                     dcitem.finished = true
                 }
+
+                update_progress_to_popup()
             })
-
-
 
         }, delay )
         
@@ -103,13 +107,25 @@ function fetch_dcitem(tabid, click_id){
     return null
 }
 
+
+function update_progress_to_popup(){
+    console.log("inside update_progress_to_popup")
+    var sendmsg ={
+        "data": progress_queue
+    }
+    
+    global_port.postMessage(sendmsg)
+}
+
 chrome.extension.onConnect.addListener(function(port) {
+    global_port = port
     console.log("Connected .....");
     port.onMessage.addListener(function(msg) {
+        // this is probably triggered at the very first port connection.
 
 
-        console.log("updated views")
-        console.log("message recieved from background" + msg);
+        // console.log("updated views")
+        // console.log("message recieved from background" + msg);
 
         var sendmsg ={
             "data": progress_queue

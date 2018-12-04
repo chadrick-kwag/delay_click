@@ -5,7 +5,7 @@
     "permissions": ["contextMenus","<all_urls>", "activeTab"],
     "background": {
       "persistent": false,
-      "scripts": ["sample.js", "jquery.min.js", "popper.js", "bootstrap.min.js"]
+      "scripts": ["background.js", "jquery.min.js", "popper.js", "bootstrap.min.js"]
     },
     "browser_action":{
       "default_title": "delay click",
@@ -15,7 +15,6 @@
     "content_scripts": [
         {
           "matches": ["http://*/*", "https://*/*"],
-          
           "js": ["inject.js"]
         }
       ]

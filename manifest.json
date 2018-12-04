@@ -1,0 +1,23 @@
+{
+    "name": "delay_click",
+    "description": "web extension for delayed click",
+    "version": "0.1",
+    "permissions": ["contextMenus","<all_urls>", "activeTab"],
+    "background": {
+      "persistent": false,
+      "scripts": ["sample.js", "jquery.min.js", "popper.js", "bootstrap.min.js"]
+    },
+    "browser_action":{
+      "default_title": "delay click",
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+          "matches": ["http://*/*", "https://*/*"],
+          
+          "js": ["inject.js"]
+        }
+      ]
+  }
+  
